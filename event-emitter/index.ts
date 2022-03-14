@@ -1,13 +1,6 @@
 import '@/namespaces';
 
 declare global {
-  namespace Application {
-    /**
-     * This interface describes the events that can be emitted by the framework. The events are defined by setting the event name as the key and the event payload as the value.
-     */
-    interface Events {}
-  }
-
   namespace Micra {
     /**
      * This interface describes the event emitter that can be used by the framework. The interface accepts a Record describing accepted events and their payloads.
@@ -16,7 +9,7 @@ declare global {
      */
     interface EventEmitter<
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      Events extends Record<string, any> = Application.Events,
+      Events extends Record<string, any> = Record<string, any>,
     > {
       /**
        * This method is used to register an event listener called when the given event is emitted.
