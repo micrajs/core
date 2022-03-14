@@ -12,7 +12,7 @@
     "url": "https://github.com/micrajs/community/issues?q=is:issue+is:open+label:%22Project:+core%22+label:%22Type:+fix%22"
   },
   "scripts": {
-    "prepare": "pnpm build",
+    "prepare": "pnpm install && pnpm build",
     "build": "tsc -p tsconfig.json && tsc-alias --silent -p tsconfig.json --dir .",
     "lint": "eslint --ext .ts,.tsx ."
   },
