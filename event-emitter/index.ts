@@ -1,4 +1,4 @@
-import '@/namespaces/Micra';
+import '@/namespaces';
 
 declare global {
   namespace Application {
