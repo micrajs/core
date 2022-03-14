@@ -1,0 +1,14 @@
+{
+	"scripts": {
+		"build": "tsc -p tsconfig.json && tsc-alias --silent -p tsconfig.json --dir .",
+		"lint": "eslint --ext .ts,.tsx ."
+	},
+	"devDependencies": {
+		"@commitlint/cli": "^16.2.1",
+		"@micra/developer-tools": "github:micrajs/developer-tools#next",
+		"@types/node": "^17.0.21",
+		"eslint": "^8.11.0",
+		"tsc-alias": "^1.6.4",
+		"typescript": "^4.6.2"
+	}
+}

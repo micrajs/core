@@ -1,0 +1,12 @@
+{
+  "extends": "@micra/developer-tools/tsconfig/base",
+  "compilerOptions": {
+    "declaration": true,
+    "emitDeclarationOnly": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["*"]
+    }
+  },
+  "include": ["**/*.ts", "**/*.tsx", "**/*.d.ts"]
+}
