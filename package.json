@@ -12,14 +12,18 @@
     "url": "https://github.com/micrajs/community/issues?q=is:issue+is:open+label:%22Project:+core%22+label:%22Type:+fix%22"
   },
   "scripts": {
+    "prepare:husky": "husky install .config/husky",
     "build": "tsc -p tsconfig.json && tsc-alias --silent -p tsconfig.json --dir .",
     "lint": "eslint --ext .ts,.tsx ."
   },
   "devDependencies": {
     "@commitlint/cli": "^16.2.1",
-    "@micra/developer-tools": "github:micrajs/developer-tools#next",
+    "@micra/commit-lint-config": "github:micrajs/commit-lint-config#next",
+    "@micra/eslint-config": "github:micrajs/eslint-config#next",
+    "@micra/typescript-config": "github:micrajs/typescript-config#next",
     "@types/node": "^17.0.21",
     "eslint": "^8.11.0",
+    "husky": "^7.0.4",
     "tsc-alias": "^1.6.4",
     "typescript": "^4.6.2"
   }

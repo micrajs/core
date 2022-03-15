@@ -2,17 +2,23 @@ lockfileVersion: 5.3
 
 specifiers:
   '@commitlint/cli': ^16.2.1
-  '@micra/developer-tools': github:micrajs/developer-tools#next
+  '@micra/commit-lint-config': github:micrajs/commit-lint-config#next
+  '@micra/eslint-config': github:micrajs/eslint-config#next
+  '@micra/typescript-config': github:micrajs/typescript-config#next
   '@types/node': ^17.0.21
   eslint: ^8.11.0
+  husky: ^7.0.4
   tsc-alias: ^1.6.4
   typescript: ^4.6.2
 
 devDependencies:
   '@commitlint/cli': 16.2.1
-  '@micra/developer-tools': github.com/micrajs/developer-tools/c9a01627ba8268baea02a04f680c657751c38468_f6a35f0183c665b4892b3299e59263f1
+  '@micra/commit-lint-config': github.com/micrajs/commit-lint-config/eb3a2fbea1ef956dafcb1746c3d582d9c0081c38_@commitlint+cli@16.2.1
+  '@micra/eslint-config': github.com/micrajs/eslint-config/4e0654377b3aca52d9cb79dfeeed23ae3dd0d2e2_f6a35f0183c665b4892b3299e59263f1
+  '@micra/typescript-config': github.com/micrajs/typescript-config/4d2468272da64a45399908882dc5e90c8ba60287
   '@types/node': 17.0.21
   eslint: 8.11.0
+  husky: 7.0.4
   tsc-alias: 1.6.4
   typescript: 4.6.2
 
@@ -1125,6 +1131,12 @@ packages:
     engines: {node: '>=10.17.0'}
     dev: true
 
+  /husky/7.0.4:
+    resolution: {integrity: sha512-vbaCKN2QLtP/vD4yvs6iz6hBEo6wkSzs8HpRah1Z6aGmF2KW5PdYuAd7uX5a+OyBZHBhd+TFLqgjUgytQr4RvQ==}
+    engines: {node: '>=12'}
+    hasBin: true
+    dev: true
+
   /ignore/5.2.0:
     resolution: {integrity: sha512-CmxgYGiEPCLhfLnpPp1MoRmifwEIOgjcHXxOBjv7mY96c+eWScsOP9c112ZyLdWHi0FxHjI+4uVhKYp/gcdRmQ==}
     engines: {node: '>= 4'}
@@ -1999,10 +2011,22 @@ packages:
     engines: {node: '>=10'}
     dev: true
 
-  github.com/micrajs/developer-tools/c9a01627ba8268baea02a04f680c657751c38468_f6a35f0183c665b4892b3299e59263f1:
-    resolution: {tarball: https://codeload.github.com/micrajs/developer-tools/tar.gz/c9a01627ba8268baea02a04f680c657751c38468}
-    id: github.com/micrajs/developer-tools/c9a01627ba8268baea02a04f680c657751c38468
-    name: '@micra/developer-tools'
+  github.com/micrajs/commit-lint-config/eb3a2fbea1ef956dafcb1746c3d582d9c0081c38_@commitlint+cli@16.2.1:
+    resolution: {tarball: https://codeload.github.com/micrajs/commit-lint-config/tar.gz/eb3a2fbea1ef956dafcb1746c3d582d9c0081c38}
+    id: github.com/micrajs/commit-lint-config/eb3a2fbea1ef956dafcb1746c3d582d9c0081c38
+    name: '@micra/commit-lint-config'
+    version: 0.1.0-next.0
+    peerDependencies:
+      '@commitlint/cli': '>= 16.2.1'
+    dependencies:
+      '@commitlint/cli': 16.2.1
+      conventional-changelog-conventionalcommits: 4.6.3
+    dev: true
+
+  github.com/micrajs/eslint-config/4e0654377b3aca52d9cb79dfeeed23ae3dd0d2e2_f6a35f0183c665b4892b3299e59263f1:
+    resolution: {tarball: https://codeload.github.com/micrajs/eslint-config/tar.gz/4e0654377b3aca52d9cb79dfeeed23ae3dd0d2e2}
+    id: github.com/micrajs/eslint-config/4e0654377b3aca52d9cb79dfeeed23ae3dd0d2e2
+    name: '@micra/eslint-config'
     version: 0.1.0-next.0
     peerDependencies:
       '@commitlint/cli': '>= 16.2.1'
@@ -2017,4 +2041,10 @@ packages:
       typescript: 4.6.2
     transitivePeerDependencies:
       - supports-color
+    dev: true
+
+  github.com/micrajs/typescript-config/4d2468272da64a45399908882dc5e90c8ba60287:
+    resolution: {tarball: https://codeload.github.com/micrajs/typescript-config/tar.gz/4d2468272da64a45399908882dc5e90c8ba60287}
+    name: '@micra/typescript-config'
+    version: 0.1.0-next.0
     dev: true
