@@ -23,7 +23,10 @@
     "@micra/typescript-config": "github:micrajs/typescript-config#next",
     "@types/node": "^17.0.21",
     "eslint": "^8.11.0",
+    "eslint-plugin-prettier": "^4.0.0",
     "husky": "^7.0.4",
+    "lint-staged": "^12.3.6",
+    "prettier": "^2.6.0",
     "tsc-alias": "^1.6.4",
     "typescript": "^4.6.2"
   }
