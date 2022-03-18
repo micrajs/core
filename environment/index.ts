@@ -12,16 +12,16 @@ declare global {
      */
     interface EnvironmentEvents {
       /**
-       * This event is emitted when a new environment variable is added.
+       * This event is emitted when an environment variable is set to an environment.
        */
       set: {
         /**
-         * The name of the environment variable.
+         * The name of the environment variable set.
          */
         key: keyof Application.EnvironmentVariables;
 
         /**
-         * The value of the environment variable.
+         * The value of the environment variable set.
          */
         value: string;
       };
