@@ -15,13 +15,13 @@
     "prepare:husky": "husky install .config/husky",
     "build": "tsc -p tsconfig.json && tsc-alias --silent -p tsconfig.json --dir .",
     "lint": "eslint --ext .ts,.tsx .",
-    "version:prerelease": "npm version prerelease --preid=next --allow-same-version"
+    "version:prerelease": "npm version prerelease --preid=next --allow-same-version && git push --follow-tags"
   },
   "devDependencies": {
     "@commitlint/cli": "^16.2.1",
-    "@micra/commit-lint-config": "github:micrajs/commit-lint-config#next",
-    "@micra/eslint-config": "github:micrajs/eslint-config#next",
-    "@micra/typescript-config": "github:micrajs/typescript-config#next",
+    "@micra/commit-lint-config": "next",
+    "@micra/eslint-config": "next",
+    "@micra/typescript-config": "next",
     "@types/node": "^17.0.21",
     "eslint": "^8.11.0",
     "eslint-plugin-prettier": "^4.0.0",
