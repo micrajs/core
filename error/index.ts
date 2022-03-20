@@ -16,7 +16,7 @@ declare global {
       /**
        * An optional object containing more specific information about the error.
        */
-      extra?: Record<string, unknown>;
+      extras?: Record<string, any>;
 
       /**
        * A URI reference that identifies the specific occurrence of the problem. It may or may not yield further information if dereferenced.
