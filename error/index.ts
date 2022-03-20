@@ -84,13 +84,11 @@ declare global {
        * Returns the validation errors for a given field.
        *
        * @param field - The field to check.
-       * @returns The validation errors for the given field or `undefined` if there are no validation errors or the field doesn't exist.
+       * @returns The validation errors for the given field if there are no validation errors or the field doesn't exist.
        *
        * @typeParam `Field` - The field to check. Inferred from the `field` parameter type.
        */
-      get<Field extends Fields>(
-        field: Field,
-      ): ValidationErrorExtras<Field> | undefined;
+      get<Field extends Fields>(field: Field): ValidationErrorExtras<Field>[];
 
       /**
        * Defines the validation errors for a given field.
