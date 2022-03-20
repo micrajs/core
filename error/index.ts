@@ -101,7 +101,7 @@ declare global {
        */
       set<Field extends Fields>(
         field: Field,
-        extras: ValidationErrorExtras<Field>,
+        extras: Omit<ValidationErrorExtras<Field>, 'field'>,
       ): this;
     }
 
