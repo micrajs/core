@@ -14,7 +14,8 @@
   "scripts": {
     "prepare:husky": "husky install .config/husky",
     "build": "tsc -p tsconfig.json && tsc-alias --silent -p tsconfig.json --dir .",
-    "lint": "eslint --ext .ts,.tsx ."
+    "lint": "eslint --ext .ts,.tsx .",
+    "version:prerelease": "npm version prerelease --preid=next --allow-same-version"
   },
   "devDependencies": {
     "@commitlint/cli": "^16.2.1",
