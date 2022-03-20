@@ -1,5 +1,3 @@
-import '@/namespaces';
-
 type GlobalError = Error;
 
 declare global {
