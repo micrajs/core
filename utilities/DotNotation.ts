@@ -55,3 +55,10 @@ export type PathValue<T, P> = P extends `${infer Left}.${infer Right}`
         | Extract<T[FieldKey], undefined>
     : undefined
   : undefined;
+
+/**
+ * It defines the union of paths and values within an object in dot notation form.
+ */
+export type PathValueUnion<T, K extends PathsOf<T> = PathsOf<T>> = K extends any
+  ? {path: K; value: PathValue<T, K>}
+  : never;

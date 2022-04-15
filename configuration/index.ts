@@ -1,5 +1,4 @@
-import type {DeepPartial} from '@/utilities/DeepPartial';
-import type {PathsOf, PathValue} from '@/utilities/DotNotation';
+import type {PathsOf, PathValue, PathValueUnion} from '@/utilities/DotNotation';
 
 declare global {
   namespace Application {
@@ -10,21 +9,14 @@ declare global {
   }
 
   namespace Micra {
+    /**
+     * It defines the events emitted by the configuration class.
+     */
     interface ConfigurationEvents {
       /**
        * This event is emitted when a configuration is set.
        */
-      set: {
-        /**
-         * The dot notation path of the configuration set.
-         */
-        path: string;
-
-        /**
-         * The value of the configuration set.
-         */
-        value: DeepPartial<Application.Configurations>;
-      };
+      set: PathValueUnion<Application.Configurations>;
     }
 
     /**
