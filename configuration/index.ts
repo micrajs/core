@@ -1,4 +1,5 @@
 import type {DeepPartial} from '@/utilities/DeepPartial';
+import type {PathsOf, PathValue} from '@/utilities/DotNotation';
 
 declare global {
   namespace Application {
@@ -17,7 +18,7 @@ declare global {
         /**
          * The name of the configuration set.
          */
-        key: keyof Application.Configurations;
+        path: PathsOf<Application.Configurations>;
 
         /**
          * The value of the configuration set.
@@ -33,54 +34,56 @@ declare global {
       /**
        * It returns the configuration for a given key. If the key is not found, it will returns undefined.
        *
-       * @param key - The key of the configuration to be returned.
+       * @param path - The dot notation path of a given key.
        * @returns The configuration value or undefined.
        *
-       * @typeParam `Key` - The key of the configuration to be returned. Inferred from the `key` parameter.
+       * @typeParam `Path` - The dot notation path of a given key. Inferred from the `key` parameter.
        */
-      get<Key extends keyof Application.Configurations>(
-        key: Key,
-      ): Application.Configurations[Key] | undefined;
+      get<Path extends PathsOf<Application.Configurations>>(
+        path: Path,
+      ): PathValue<Application.Configurations, Path> | undefined;
       /**
        * It returns the configuration for a given key. If the key is not found, it will return the fallback value provided.
        *
-       * @param key - The key of the configuration to be returned.
+       * @param path - The dot notation path of a given key.
        * @param fallback - The default value to be returned if the key is not found.
        * @returns The configuration value or the fallback value.
        *
-       * @typeParam `Key` - The key of the configuration to be returned. Inferred from the `key` parameter.
+       * @typeParam `Path` - The dot notation path of a given key. Inferred from the `key` parameter.
        */
-      get<Key extends keyof Application.Configurations>(
-        key: Key,
-        fallback: Application.Configurations[Key],
-      ): Application.Configurations[Key];
-      get<Key extends keyof Application.Configurations>(
-        key: Key,
-        fallback?: Application.Configurations[Key],
-      ): Application.Configurations[Key] | undefined;
+      get<Path extends PathsOf<Application.Configurations>>(
+        path: Path,
+        fallback: PathValue<Application.Configurations, Path>,
+      ): PathValue<Application.Configurations, Path>;
+      get<Path extends PathsOf<Application.Configurations>>(
+        path: Path,
+        fallback?: PathValue<Application.Configurations, Path>,
+      ): PathValue<Application.Configurations, Path> | undefined;
 
       /**
        * It verifies if a configuration exists for a given key.
        *
-       * @param key - The key of the configuration to be verified.
+       * @param path - The key of the configuration to be verified.
        * @returns True if the configuration exists, false otherwise.
        *
-       * @typeParam `Key` - The key of the configuration to be verified. Inferred from the `key` parameter.
+       * @typeParam `Path` - The key of the configuration to be verified. Inferred from the `key` parameter.
        */
-      has<Key extends keyof Application.Configurations>(key: Key): boolean;
+      has<Path extends PathsOf<Application.Configurations>>(
+        path: Path,
+      ): boolean;
 
       /**
        * It sets the configuration for a given key.
        *
-       * @param key - The key of the configuration to be set.
+       * @param path - The key of the configuration to be set.
        * @param value _The value of the configuration to be set.
        * @returns The configuration value.
        *
-       * @typeParam `Key` - The key of the configuration to be set. Inferred from the `key` parameter.
+       * @typeParam `Path` - The key of the configuration to be set. Inferred from the `key` parameter.
        */
-      set<Key extends keyof Application.Configurations>(
-        key: Key,
-        value: Application.Configurations[Key],
+      set<Path extends PathsOf<Application.Configurations>>(
+        path: Path,
+        value: PathValue<Application.Configurations, Path>,
       ): void;
     }
   }
