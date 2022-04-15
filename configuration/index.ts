@@ -16,9 +16,9 @@ declare global {
        */
       set: {
         /**
-         * The name of the configuration set.
+         * The dot notation path of the configuration set.
          */
-        path: PathsOf<Application.Configurations>;
+        path: string;
 
         /**
          * The value of the configuration set.
