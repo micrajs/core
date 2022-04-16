@@ -32,7 +32,7 @@ declare global {
        */
       emit<EventName extends keyof Events>(
         ...args: EmitArgs<Events, EventName>
-      ): void;
+      ): Promise<void>;
 
       /**
        * This method is used to dispatch an event and call the listeners synchronously.
@@ -58,7 +58,7 @@ declare global {
      * @typeParam `EventName` - The event name.
      */
     type EmitArgs<
-      Events extends Record<string, unknown>,
+      Events extends Record<string, any>,
       EventName extends keyof Events,
     > = Events[EventName] extends never
       ? never
