@@ -1,0 +1,151 @@
+import {Static} from '@/utilities/Static';
+
+declare global {
+  namespace Application {
+    /**
+     * It defines the services available in the application.
+     */
+    interface Services {}
+  }
+
+  namespace Micra {
+    /**
+     * It defines the events emitted by the service container entity.
+     */
+    interface ServiceContainerEvents {
+      /**
+       * This event is emitted when a service is cloned.
+       */
+      clone: {
+        /**
+         * The cloned container's id.
+         */
+        containerId: string;
+        /**
+         * The instance of the cloned container.
+         */
+        container: ServiceContainer;
+      };
+
+      /**
+       * This event is emitted when a service is registered.
+       */
+      set: {
+        /**
+         * The container's id.
+         */
+        containerId: string;
+        /**
+         * The service's namespace.
+         */
+        namespace: keyof Application.Services;
+      };
+    }
+
+    /**
+     * The ServiceContainer entity is responsible for storing, instantiating and retrieving service instances for the application. It extends the EventEmitter class and provides a set of methods to interact with the services.
+     */
+    interface ServiceContainer
+      extends Micra.EventEmitter<ServiceContainerEvents> {
+      /**
+       * It registers a service with the container as a non-shared instance. Such service will be instantiated every time it is requested.
+       *
+       * @param namespace - The namespace of the service.
+       * @param service - The service to be registered.
+       * @returns The container instance.
+       *
+       * @emits ServiceContainerEvents.set
+       *
+       * @typeParam `Namespace` - The namespace of the service defined in the Application.Services interface. Inferred from the `namespace` parameter.
+       */
+      register<Namespace extends keyof Application.Services>(
+        namespace: Namespace,
+        service: Static<Application.Services[Namespace]>,
+      ): this;
+
+      /**
+       * It registers a service with the container as a shared instance. Such service will be instantiated only once and then shared among all the requests.
+       *
+       * @param namespace - The namespace of the service.
+       * @param service - The service to be registered.
+       * @returns The container instance.
+       *
+       * @emits ServiceContainerEvents.set
+       *
+       * @typeParam `Namespace` - The namespace of the service defined in the Application.Services interface. Inferred from the `namespace` parameter.
+       */
+      singleton<Namespace extends keyof Application.Services>(
+        namespace: Namespace,
+        service: Static<Application.Services[Namespace]>,
+      ): this;
+
+      /**
+       * It registers a service with the container as a shared instance. Such service will not be instantiated and will be returned as defined.
+       *
+       * @param namespace - The namespace of the service.
+       * @param value - The service to be registered.
+       * @returns The container instance.
+       *
+       * @emits ServiceContainerEvents.set
+       *
+       * @typeParam `Namespace` - The namespace of the service defined in the Application.Services interface. Inferred from the `namespace` parameter.
+       */
+      value<Namespace extends keyof Application.Services>(
+        namespace: Namespace,
+        value: Application.Services[Namespace],
+      ): this;
+
+      /**
+       * It registers a service factory with the container that returns the instance of a service. The instance returned will be shared among all the requests.
+       *
+       * @param namespace - The namespace of the service.
+       * @param factory - The factory to be registered.
+       * @returns The container instance.
+       *
+       * @emits ServiceContainerEvents.set
+       *
+       * @typeParam `Namespace` - The namespace of the service defined in the Application.Services interface. Inferred from the `namespace` parameter.
+       */
+      factory<Namespace extends keyof Application.Services>(
+        namespace: Namespace,
+        factory: (
+          dependencyContainer: ServiceContainer,
+        ) => Application.Services[Namespace],
+      ): this;
+
+      /**
+       * It retrieves a service from the container.
+       *
+       * @param namespace - The namespace of the service to be retrieved.
+       * @returns The service instance or value.
+       * @throws An error if the service is not found.
+       *
+       * @typeParam `Namespace` - The namespace of the service defined in the Application.Services interface. Inferred from the `namespace` parameter.
+       */
+      use<Namespace extends keyof Application.Services>(
+        namespace: Namespace,
+      ): Application.Services[Namespace];
+
+      /**
+       * It verifies if a service is registered in the container.
+       *
+       * @param namespace - The namespace of the service to be checked.
+       * @returns True if the service is registered, false otherwise.
+       */
+      has<Namespace extends keyof Application.Services>(
+        namespace: Namespace,
+      ): boolean;
+
+      /**
+       * It clones the current container and returns a new instance.
+       *
+       * @returns A new instance of the container.
+       *
+       * @emits ServiceContainerEvents.clone
+       */
+      clone(): ServiceContainer;
+    }
+  }
+}
+
+export {};
