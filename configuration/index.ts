@@ -24,7 +24,7 @@ declare global {
      */
     interface Configuration extends EventEmitter<ConfigurationEvents> {
       /**
-       * It returns the configuration for a given key. If the key is not found, it will returns undefined.
+       * It returns the configuration for a given key. If the key is not found, it returns undefined.
        *
        * @param path - The dot notation path of a given key.
        * @returns The configuration value or undefined.

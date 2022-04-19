@@ -9,14 +9,14 @@ declare global {
        *
        * @param container - The service container.
        */
-      register?(container: ServiceContainer): void | Promise<void>;
+      register?(application: Application): void | Promise<void>;
 
       /**
        * It initializes a service on the service container. This method is called once every service providers' register method have been called.
        *
        * @param container - The service container.
        */
-      boot?(container: ServiceContainer): void | Promise<void>;
+      boot?(application: Application): void | Promise<void>;
     }
   }
 }
