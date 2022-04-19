@@ -9,12 +9,12 @@ declare global {
       /**
        * It initializes the kernel. This method is called after all of the application's services have been registered and booted. With this, the kernel can perform any necessary initialization based on all the services available.
        */
-      boot?(container: ServiceContainer): void | Promise<void>;
+      boot?(application: Application): void | Promise<void>;
 
       /**
        * It runs the kernel. This method is responsible for defining how the application is executed.
        */
-      run?(container: ServiceContainer): Return | Promise<Return>;
+      run?(application: Application): Return | Promise<Return>;
     }
   }
 }
