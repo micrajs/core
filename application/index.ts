@@ -138,7 +138,7 @@ declare global {
       /**
        * The application's configuration.
        */
-      readonly configurations: Configuration;
+      readonly configuration: Configuration;
 
       /**
        * The application's service container.
