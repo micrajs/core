@@ -1,10 +1,6 @@
-declare global {
-  namespace Micra {
-    type Use = <Namespace extends keyof Application.Services>(
-      namespace: Namespace,
-    ) => Application.Services[Namespace];
-  }
+import '..';
 
+declare global {
   /**
    * Global helper that retrieves an instance of a service from the service container. If the service is not registered, it will throw an error.
    *
