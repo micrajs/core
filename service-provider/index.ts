@@ -9,14 +9,14 @@ declare global {
        *
        * @param container - The service container.
        */
-      register?(application: Application): void | Promise<void>;
+      register?(application: Micra.Application): void | Promise<void>;
 
       /**
        * It initializes a service on the service container. This method is called once every service providers' register method have been called.
        *
        * @param container - The service container.
        */
-      boot?(application: Application): void | Promise<void>;
+      boot?(application: Micra.Application): void | Promise<void>;
     }
   }
 }
