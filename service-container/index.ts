@@ -1,4 +1,6 @@
-import {Static} from '@/utilities/Static';
+import '@/namespaces';
+import '@/event-emitter';
+import type {Static} from '@/utilities/Static';
 
 declare global {
   namespace Application {

@@ -1,3 +1,11 @@
+import '@/namespaces';
+import '@/configuration';
+import '@/environment';
+import '@/error';
+import '@/event-emitter';
+import '@/kernel';
+import '@/service-container';
+import '@/service-provider';
 import type {PathsOf, PathValue} from '@/utilities/DotNotation';
 import type {Static} from '@/utilities/Static';
 

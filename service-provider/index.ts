@@ -1,3 +1,6 @@
+import '@/namespaces';
+import '@/application';
+
 declare global {
   namespace Micra {
     /**
