@@ -1,6 +1,7 @@
 import '@/namespaces';
 import '@/event-emitter';
 import type {Static} from '@/utilities/Static';
+import type {KeyMethodString} from '@/utilities/KeyMethodString';
 
 declare global {
   namespace Application {
@@ -223,6 +224,15 @@ declare global {
        */
       clone(): ServiceContainer;
     }
+
+    /**
+     * It represents the namespaces and methods in the service container with a given type in the form of `namespace` or `namespace.method`.
+     */
+    type ServicesWithType<Type> = KeyMethodString<
+      Type,
+      Application.Services,
+      keyof Application.Services
+    >;
   }
 }
 
