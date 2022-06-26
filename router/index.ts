@@ -1,4 +1,4 @@
-import '@/namespace';
+import '@/namespaces';
 import '@/service-container';
 import type {PathOptions, PathParams} from '@/utilities/PathParams';
 
