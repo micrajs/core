@@ -1,13 +1,13 @@
-import '@/namespace';
-import '@/service-container';
-import {PathOptions, PathParams} from '@/utilities/PathParams';
+import '../namespace';
+import '../service-container';
+import {PathOptions, PathParams} from '../utilities/PathParams';
 
 declare global {
   namespace Application {
     /**
      * It defines router extensions.
      */
-    interface Routers extends Micra.RouterExtension {}
+    interface Routers {}
   }
 
   namespace Micra {
@@ -17,7 +17,7 @@ declare global {
      * @typeParam `Path` - The path of the route.
      * @typeParam `Options` - The options to identify path parameters.
      */
-    type HandlerContext<
+    type RouteHandlerContext<
       Path extends string,
       Options extends PathOptions = RoutePathOptions,
     > = {
@@ -25,7 +25,7 @@ declare global {
       params: PathParams<Path, Options>;
     };
 
-    type NextFunction = (err?: Error) => void;
+    type NextFunction = (err?: Error) => Promise<void | Response>;
 
     /**
      * It defines a route middleware.
@@ -40,9 +40,9 @@ declare global {
       Path extends string = string,
       Options extends PathOptions = RoutePathOptions,
     >(
-      context: HandlerContext<Path, Options>,
+      context: RouteHandlerContext<Path, Options>,
       next: NextFunction,
-    ) => Promise<void>;
+    ) => Promise<void | Response>;
 
     /**
      * It handles a request to a given route. This method is called with the HandlerContext and should return a Response object.
@@ -52,17 +52,20 @@ declare global {
      * @typeParam `Path` - The path of the route.
      * @typeParam `Options` - The options to identify path parameters.
      */
-    type Handler<
+    type RouteHandler<
       Path extends string = string,
       Options extends PathOptions = RoutePathOptions,
-    > = (context: HandlerContext<Path, Options>) => Promise<Response>;
+    > = (context: RouteHandlerContext<Path, Options>) => Promise<Response>;
 
     /**
-     * It defines a function that is used to define a route in the Router.
+     * Function used to define a route in the Router.
      *
      * @typeParam `Route` - The route builder that's returned.
      */
-    type RouteDefinition<Route extends RouteBuilder = RouteBuilder> = {
+    type RouteCreator<
+      CustomRouteBuilder extends RouteBuilder = RouteBuilder,
+      Options extends PathOptions = RoutePathOptions,
+    > = {
       /**
        * It defines a function that is used to define a route in the Router.
        *
@@ -72,17 +75,24 @@ declare global {
        * @typeParam `Path` - The path of the route. Inferred from the `path` parameter.
        * @typeParam `Options` - The options to identify path parameters.
        */
-      <Path extends string, Options extends PathOptions = RoutePathOptions>(
+      <Path extends string>(
         path: Path,
-        handler: Handler<Path, Options>,
-      ): Route;
+        handler: RouteHandler<Path, Options>,
+      ): CustomRouteBuilder;
       /**
        * It defines a function that is used to define a route in the Router.
        *
        * @param path - The path of the route.
        * @param service - The namespace.method of the service to retrieve from the service container.
        */
-      (path: string, service: ServicesWithType<Handler>): Route;
+      <Path extends string>(
+        path: Path,
+        service: ServiceWithType<RouteHandler<Path, Options>>,
+      ): CustomRouteBuilder;
+      <Path extends string>(
+        path: Path,
+        serviceOrHandler: TypeOrService<RouteHandler<Path, Options>>,
+      ): CustomRouteBuilder;
     };
 
     /**
@@ -98,7 +108,7 @@ declare global {
       /**
        * The path of the route.
        */
-      readonly path: Path;
+      readonly definition: Path;
 
       /**
        * It tests if the path matches the route.
@@ -113,7 +123,7 @@ declare global {
        *
        * @param path - The path to parse.
        */
-      exec(path: string): PathParams<Path, Options>;
+      match(path: string): PathParams<Path, Options>;
 
       /**
        * It compiles a path string from the path parameters.
@@ -121,19 +131,15 @@ declare global {
        * @param parameters - The path parameters to generate.
        */
       toString(parameters?: PathParams<Path, Options>): string;
+
       /**
-       * It compiles a path string from the path options.
+       * It adds a prefix to the route's path.
        *
-       * @param options - The path options including parameters, query parameters and hash parameters.
+       * @param pathPrefix - The path prefix to use.
        */
-      toString(options: {
-        /** The path parameters to generate the path */
-        params?: PathParams<Path, Options>;
-        /** Query parameters to be appended to the path */
-        query?: Record<string, any>;
-        /** Hash parameter to be appended to the path */
-        hash?: string;
-      }): string;
+      prefix<Prefix extends string>(
+        pathPrefix: Prefix,
+      ): RoutePath<`${Prefix}${Options['PATH_SEPARATOR']}${Path}`, Options>;
     }
 
     /**
@@ -154,9 +160,14 @@ declare global {
       Options extends PathOptions = RoutePathOptions,
     > {
       /**
+       * A unique identifier for the route.
+       */
+
+      readonly id: string;
+      /**
        * The route handler.
        */
-      handler: Handler<Path, Options>;
+      handler: TypeOrService<RouteHandler<Path, Options>>;
 
       /**
        * The methods in which the route is allowed to be called.
@@ -171,12 +182,17 @@ declare global {
       /**
        * Middlewares or namespace.method of the service to be called before the route handler.
        */
-      middlewares: (Middleware | ServicesWithType<Middleware>)[];
+      middlewares: TypeOrService<Middleware>[];
 
       /**
        * The route's path.
        */
       path: RoutePath<Path, Options>;
+
+      /**
+       * The route's nested routes.
+       */
+      nested: RouteRegistry<Options>;
     }
 
     /**
@@ -186,22 +202,30 @@ declare global {
      */
     interface RouteRegistry<Options extends PathOptions = RoutePathOptions> {
       /**
+       * It determines if the route registry is frozen. If it is frozen, new routes and middlewares cannot be added.
+       */
+      readonly frozen: boolean;
+
+      /**
        * It defines the list of middlewares to be ran before the registered routes.
        */
-      readonly middlewares: (Middleware | ServicesWithType<Middleware>)[];
+      readonly middlewares: Readonly<TypeOrService<Middleware>[]>;
 
       /**
        * It retrieves all routes that are registered to a given method.
        *
        * @param method - The method in which the routes are allowed to be called.
        */
-      findAll(method: string): Readonly<Route<string, Options>>[];
+      findAll(path: string, method: string): Readonly<Route<string, Options>>[];
       /**
        * It retrieves all routes that are registered to a given list of methods.
        *
        * @param methods - The methods in which the routes are allowed to be called.
        */
-      findAll(methods: string[]): Readonly<Route<string, Options>>[];
+      findAll(
+        path: string,
+        methods: string[],
+      ): Readonly<Route<string, Options>>[];
       /**
        * It retrieves all registered routes.
        */
@@ -216,7 +240,7 @@ declare global {
       findByName(
         name: string,
         methods: string[],
-      ): Readonly<Route<string, Options>>[];
+      ): Readonly<Route<string, Options>> | undefined;
       /**
        * It retrieves a route by its name and a given method.
        *
@@ -226,13 +250,13 @@ declare global {
       findByName(
         name: string,
         method: string,
-      ): Readonly<Route<string, Options>>[];
+      ): Readonly<Route<string, Options>> | undefined;
       /**
        * It retrieves a route by its name.
        *
        * @param name - The route name.
        */
-      findByName(name: string): Readonly<Route<string, Options>>[];
+      findByName(name: string): Readonly<Route<string, Options>> | undefined;
 
       /**
        * It retrieves a route by its path and a given method. If no route is found, it returns undefined.
@@ -270,20 +294,25 @@ declare global {
       /**
        * It registers a new route.
        *
-       * @param route - The route to be registered.
+       * @param routes - The route to be registered.
        */
-      register(route: Route<string, Options>): this;
+      register(...routes: Route<any, Options>[]): this;
 
       /**
        * It registers a new list of middlewares to be ran before the registered routes.
        *
        * @param middleware - The middleware to be registered.
        */
-      use(...middleware: (Middleware | ServicesWithType<Middleware>)[]): this;
+      use(...middleware: TypeOrService<Middleware>[]): this;
+
+      /**
+       * It freezes the route registry. If it is frozen, new routes and middlewares cannot be added.
+       */
+      freeze(): this;
     }
 
     /**
-     * It defines a route builder. This class is used to fluently define routes and is returned by the `RouteDefinition` methods. This can be extended to define more specialized builders for different route types.
+     * It defines a route builder. This class is used to fluently define routes and is returned by the `RouteCreator` methods. This can be extended to define more specialized builders for different route types.
      */
     interface RouteBuilder {
       /**
@@ -294,18 +323,28 @@ declare global {
       name(name: string): this;
 
       /**
-       * It defines the route's prefix.
+       * It adds a list of middlewares to be ran before the route's handler.
+       */
+      middlewares(...middlewares: TypeOrService<Middleware>[]): this;
+
+      /**
+       * It adds nested routes.
+       */
+      nested(routeGroup: (router: Router) => void): this;
+    }
+
+    interface RouteGroupBuilder {
+      /**
+       * It sets the prefix for all routes within the route group.
        *
        * @param prefix - The prefix to be added to the route path.
        */
       prefix(prefix: string): this;
 
       /**
-       * It adds a list of middlewares to be ran before the route's handler.
+       * It adds a list of middlewares to be ran before all routes within the route group.
        */
-      middleware(
-        ...middleware: (Middleware | ServicesWithType<Middleware>)[]
-      ): this;
+      middlewares(...middlewares: TypeOrService<Middleware>[]): this;
     }
 
     /**
@@ -322,7 +361,18 @@ declare global {
       /**
        * It defines a route that is executed with any method.
        */
-      any: RouteDefinition;
+      any<Path extends string>(
+        path: Path,
+        handler: RouteHandler<Path, Options>,
+      ): RouteBuilder;
+      any<Path extends string>(
+        path: Path,
+        service: ServiceWithType<RouteHandler<Path, Options>>,
+      ): RouteBuilder;
+      any<Path extends string>(
+        path: Path,
+        serviceOrHandler: TypeOrService<RouteHandler<Path, Options>>,
+      ): RouteBuilder;
 
       /**
        * It defines a route that is executed in any of the given methods.
@@ -331,10 +381,10 @@ declare global {
        * @param path - The path of the route.
        * @param handler - The route handler.
        */
-      match<Path extends string>(
+      register<Path extends string>(
         methods: string[],
         path: Path,
-        handler: Handler,
+        handler: RouteHandler<Path, Options>,
       ): RouteBuilder;
       /**
        * It defines a route that is executed in any of the given methods.
@@ -343,10 +393,15 @@ declare global {
        * @param path - The path of the route.
        * @param service - The namespace of the service to be called.
        */
-      match(
+      register<Path extends string>(
         methods: string[],
-        path: string,
-        service: ServicesWithType<Handler>,
+        path: Path,
+        service: ServiceWithType<RouteHandler<Path, Options>>,
+      ): RouteBuilder;
+      register<Path extends string>(
+        methods: string[],
+        path: Path,
+        serviceOrHandler: TypeOrService<RouteHandler<Path, Options>>,
       ): RouteBuilder;
 
       /**
@@ -354,26 +409,47 @@ declare global {
        *
        * @param definitions - The definitions to be registered.
        */
-      extend(definitions: Partial<Application.Routers>): this;
+      extend(definitions: Partial<RouterExtensionDefinition<Options>>): this;
 
       /**
        * It creates a new route group. This allows you to share route attributes across a large number of routes without needing to define those attributes on each individual route.
        *
        * @param routeGroup - The route group
        */
-      group(routeGroup: (router: Router) => void): RouteBuilder;
+      group(routeGroup: (router: Router<Options>) => void): RouteGroupBuilder;
+
+      /**
+       * It adds a list of middlewares to be ran before the route's handler.
+       */
+      middlewares(...middlewares: TypeOrService<Middleware>[]): this;
+
+      /**
+       * It returns a new Router instance including all extensions with a new registry.
+       *
+       * @param registry - A route registry to be used instead of the default one.
+       */
+      clone(registry?: RouteRegistry<Options>): Router<Options>;
     }
 
-    type RouterExtension = {
-      [key: string]: Micra.RouteDefinition;
-    } & {
-      [Key in keyof Micra.BaseRouter]: never;
+    type RouterExtensionDefinition<
+      Options extends PathOptions = RoutePathOptions,
+    > = {
+      [Extension in keyof Application.Routers]: RouterExtensionProvider<
+        Extension,
+        Options
+      >;
     };
+
+    type RouterExtensionProvider<
+      Extension extends keyof Application.Routers = keyof Application.Routers,
+      Options extends PathOptions = RoutePathOptions,
+    > = (router: BaseRouter<Options>) => Application.Routers[Extension];
 
     /**
      * This class is used to define routes and middlewares that can be executed by the Application.
      */
-    type Router = BaseRouter & Application.Routers;
+    type Router<Options extends PathOptions = RoutePathOptions> =
+      BaseRouter<Options> & Application.Routers;
   }
 }
 

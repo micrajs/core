@@ -228,11 +228,16 @@ declare global {
     /**
      * It represents the namespaces and methods in the service container with a given type in the form of `namespace` or `namespace.method`.
      */
-    type ServicesWithType<Type> = KeyMethodString<
+    type ServiceWithType<Type> = KeyMethodString<
       Type,
       Application.Services,
       keyof Application.Services
     >;
+
+    /**
+     * It represents either a value of a given type or a namespaces in the service container with the given type in the form of `namespace` or `namespace.method`.
+     */
+    type TypeOrService<Type> = Type | ServiceWithType<Type>;
   }
 }
 
