@@ -17,13 +17,13 @@ declare global {
      * @typeParam `Path` - The path of the route.
      * @typeParam `Options` - The options to identify path parameters.
      */
-    type RouteHandlerContext<
-      Path extends string,
+    interface RouteHandlerContext<
+      Path extends string = string,
       Options extends PathOptions = RoutePathOptions,
-    > = {
+    > {
       request: Request;
       params: PathParams<Path, Options>;
-    };
+    }
 
     type NextFunction = (err?: Error) => Promise<void | Response>;
 

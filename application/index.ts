@@ -111,15 +111,15 @@ declare global {
       use: boolean;
     }
 
-    interface ApplicationConfiguration {
+    interface ApplicationConfiguration<KernelReturn = void> {
       /**
        * An object containing the application's configurations based on the Application.Configurations interface.
        */
-      configurations: {
+      configurations: Partial<{
         [Configuration in keyof Application.Configurations]:
           | Application.Configurations[Configuration]
           | Static<Application.Configurations[Configuration]>;
-      };
+      }>;
 
       /**
        * The implementation of the applications's ServiceContainer.
@@ -139,7 +139,7 @@ declare global {
       /**
        * The implementation of the applications's Kernel.
        */
-      kernel: Kernel | Static<Kernel>;
+      kernel: Kernel<KernelReturn> | Static<Kernel<KernelReturn>>;
 
       /**
        * An object containing the application's service providers.
@@ -259,15 +259,17 @@ declare global {
       initializeProviders(
         serviceProviders: ApplicationConfiguration['providers'],
       ): Promise<void>;
-
       /**
        * It initializes a set of service providers synchronously. This can be used to lazy load service providers.
        *
        * @param serviceProviders - The service providers to register on the application.
        */
-      initializeProvidersSync(
+      initializeProviders(
         serviceProviders: ApplicationConfiguration['providers'],
       ): void;
+      initializeProviders(
+        serviceProviders: ApplicationConfiguration['providers'],
+      ): Promise<void> | void;
 
       /**
        * It runs the application. If the application has not been initialized, it will be initialized first.
@@ -276,7 +278,7 @@ declare global {
        * @returns The return from the application's kernel.
        */
       run<Return = void>(
-        configuration?: Partial<ApplicationConfiguration>,
+        configuration?: Partial<ApplicationConfiguration<Return>>,
       ): Promise<Return>;
 
       /**
@@ -285,23 +287,33 @@ declare global {
        * @param configuration - The application's configuration.
        * @returns The return from the application's kernel.
        */
-      runSync<Return = void>(
-        configuration?: Partial<ApplicationConfiguration>,
+      run<Return = void>(
+        configuration?: Partial<ApplicationConfiguration<Return>>,
       ): Return;
+      run<Return = void>(
+        configuration?: Partial<ApplicationConfiguration<Return>>,
+      ): Promise<Return> | Return;
 
       /**
        * It initializes the application based on the given configuration. This method is called by the application's run method. In cases where the application is not being run, it can be called directly.
        *
        * @param configuration - The application's configuration.
        */
-      start(configuration?: Partial<ApplicationConfiguration>): Promise<void>;
+      start<Return = void>(
+        configuration?: Partial<ApplicationConfiguration<Return>>,
+      ): Promise<void>;
 
       /**
        * It initializes the application synchronously based on the given configuration. This method is called by the application's run method. In cases where the application is not being run, it can be called directly.
        *
        * @param configuration - The application's configuration.
        */
-      startSync(configuration?: Partial<ApplicationConfiguration>): void;
+      start<Return = void>(
+        configuration?: Partial<ApplicationConfiguration<Return>>,
+      ): void;
+      start<Return = void>(
+        configuration?: Partial<ApplicationConfiguration<Return>>,
+      ): Promise<void> | void;
     }
   }
 }
