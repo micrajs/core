@@ -1,5 +1,6 @@
 import '@/namespaces';
 import '@/service-container';
+import '@/application/globals/helpers';
 import type {PathOptions, PathParams} from '@/utilities/PathParams';
 
 declare global {
@@ -21,8 +22,11 @@ declare global {
       Path extends string = string,
       Options extends PathOptions = RoutePathOptions,
     > {
-      request: Request;
+      config: Config;
+      env: Env;
       params: PathParams<Path, Options>;
+      request: Request;
+      use: Use;
     }
 
     type NextFunction = (err?: Error) => Promise<void | Response>;

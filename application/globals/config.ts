@@ -1,4 +1,4 @@
-import '..';
+import './helpers';
 
 declare global {
   /**
