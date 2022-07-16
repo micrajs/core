@@ -454,6 +454,32 @@ declare global {
      */
     type Router<Options extends PathOptions = RoutePathOptions> =
       BaseRouter<Options> & Application.Routers;
+
+    /**
+     * It defines the context of a given request handler.
+     */
+    interface RequestHandlerContext {
+      request: Request;
+      config: Config;
+      env: Env;
+      use: Use;
+    }
+
+    /**
+     * It defines a request handler.
+     */
+    type RequestHandler = (
+      context: RequestHandlerContext,
+    ) => Promise<Response | void>;
+
+    /**
+     * It manages a list of request handlers which can be extended by custom router extensions.
+     * This allows extensions to define a particular way a given request type is handled.
+     */
+    interface RequestHandlerManager {
+      use(...handlers: RequestHandler[]): this;
+      handle(context: RequestHandlerContext): Promise<Response>;
+    }
   }
 }
 
