@@ -1,6 +1,11 @@
 import type {PathsOf, PathValue} from '@/utilities/DotNotation';
 
 declare global {
+  namespace Application {
+    interface Configurations {}
+    interface EnvironmentVariables {}
+    interface Services {}
+  }
   namespace Micra {
     /**
      * Global helper that retrieves an instance of a service from the service container. If the service is not registered, it will throw an error.
