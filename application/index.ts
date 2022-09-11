@@ -135,12 +135,12 @@ declare global {
       /**
        * Emitted when the application has finished initializing.
        */
-      didStart: void;
+      applicationReady: void;
 
       /**
        * Emitted when the application will start its execution.
        */
-      applicationReady: void;
+      willRun: void;
 
       /**
        * Emitted when an error occurs during the application's execution
