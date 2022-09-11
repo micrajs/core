@@ -51,7 +51,9 @@ declare global {
       /**
        * An object containing the application's environment classes.
        */
-      environments: Record<string, Environment | Static<Environment>>;
+      environments:
+        | Record<string, Environment | Static<Environment>>
+        | (Environment | Static<Environment>)[];
 
       /**
        * An object defining which global helper should be initialized.
@@ -66,7 +68,9 @@ declare global {
       /**
        * An object containing the application's service providers.
        */
-      providers: Record<string, ServiceProvider | Static<ServiceProvider>>;
+      providers:
+        | Record<string, ServiceProvider | Static<ServiceProvider>>
+        | (ServiceProvider | Static<ServiceProvider>)[];
     }
 
     /**
@@ -86,7 +90,7 @@ declare global {
       /**
        * Emitted when the application has finished initializing the service container.
        */
-      didInitializeContainer: ServiceContainer;
+      containerReady: ServiceContainer;
 
       /**
        * Emitted when the application will start to initialize the environments.
@@ -96,7 +100,7 @@ declare global {
       /**
        * Emitted when the application has finished initializing the environments.
        */
-      didInitializeEnvironments: Environment;
+      environmentsReady: Environment;
 
       /**
        * Emitted when the application will start to initialize the configurations.
@@ -106,7 +110,7 @@ declare global {
       /**
        * Emitted when the application has finished initializing the configurations.
        */
-      didInitializeConfigurations: Configuration;
+      configurationsReady: Configuration;
 
       /**
        * Emitted when the application will start to initialize the service providers.
@@ -116,7 +120,7 @@ declare global {
       /**
        * Emitted when the application has finished initializing the service providers.
        */
-      didInitializeProviders: ServiceProvider[];
+      providersReady: ServiceProvider[];
 
       /**
        * Emitted when the application will start to initialize the kernel.
@@ -126,7 +130,7 @@ declare global {
       /**
        * Emitted when the application has finished initializing the kernel.
        */
-      didInitializeKernel: Kernel;
+      kernelReady: Kernel;
 
       /**
        * Emitted when the application has finished initializing.
@@ -136,12 +140,12 @@ declare global {
       /**
        * Emitted when the application will start its execution.
        */
-      willRun: void;
+      applicationReady: void;
 
       /**
        * Emitted when an error occurs during the application's execution
        */
-      onError: Micra.Error;
+      error: Micra.Error;
     }
 
     /**
