@@ -240,6 +240,11 @@ declare global {
       start<Return = void>(
         configuration?: Partial<ApplicationConfiguration<Return>>,
       ): Promise<void> | void;
+
+      /**
+       * It terminates the application.
+       */
+      terminate(): Promise<void> | void;
     }
   }
 }

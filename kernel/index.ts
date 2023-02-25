@@ -17,6 +17,11 @@ declare global {
        * It runs the kernel. This method is responsible for defining how the application is executed.
        */
       run?(application: Micra.Application): Return | Promise<Return>;
+
+      /**
+       * It runs when the application terminates.
+       */
+      terminate?(application: Micra.Application): Return | Promise<Return>;
     }
   }
 }
