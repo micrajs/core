@@ -143,6 +143,16 @@ declare global {
       willRun: void;
 
       /**
+       * Emitted when the application has finished its execution and is about to terminate.
+       */
+      willTerminate: void;
+
+      /**
+       * Emitted when the application has finished its execution.
+       */
+      terminated: void;
+
+      /**
        * Emitted when an error occurs during the application's execution
        */
       error: Micra.Error;
