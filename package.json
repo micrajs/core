@@ -1,6 +1,6 @@
 {
   "name": "@micra/core",
-  "version": "0.1.0-next.25",
+  "version": "0.1.0-next.26",
   "description": "Micra framework's core interfaces and contracts",
   "repository": {
     "type": "git",
