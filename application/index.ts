@@ -328,15 +328,7 @@ declare global {
       createScope(
         name: string,
         options?: Partial<Omit<ApplicationScopeOptions, 'name'>>,
-      ): Promise<Application>;
-      createScope(
-        name: string,
-        options?: Partial<Omit<ApplicationScopeOptions, 'name'>>,
       ): Application;
-      createScope(
-        name: string,
-        options?: Partial<Omit<ApplicationScopeOptions, 'name'>>,
-      ): Application | Promise<Application>;
     }
   }
 }
