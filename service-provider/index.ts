@@ -67,6 +67,13 @@ declare global {
        * @param application - The application.
        */
       boot?(application: Micra.Application): void | Promise<void>;
+
+      /**
+       * It terminates services on the service container. This method is called upon application termination.
+       *
+       * @param application - The application.
+       */
+      terminate?(application: Micra.Application): void | Promise<void>;
     }
   }
 }

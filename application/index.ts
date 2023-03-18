@@ -63,6 +63,12 @@ declare global {
        * Defaults to ['register', 'boot'].
        */
       provider: (keyof ServiceProvider)[];
+
+      /**
+       * Names of the service provider hooks that are called when terminating the scope.
+       * Defaults to ['terminate'].
+       */
+      terminate: (keyof ServiceProvider)[];
     }
 
     interface ApplicationConfiguration<KernelReturn = void> {
