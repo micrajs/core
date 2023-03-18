@@ -15,25 +15,64 @@ declare global {
       /**
        * It registers the application's instance on the global scope. This is useful for debugging or testing purposes and is not recommended for production. By default it is set to false.
        */
-      app: boolean;
+      app: Application | boolean;
 
       /**
        * It registers a getter for the application's configurations in the global scope.
        */
-      config: boolean;
+      config: Config | boolean;
 
       /**
        * It registers a getter for the application's environment variables in the global scope.
        */
-      env: boolean;
+      env: Env | boolean;
 
       /**
        * It registers a getter for the application's services in the global scope.
        */
-      use: boolean;
+      use: Use | boolean;
+    }
+
+    interface ApplicationScopeOptions {
+      /**
+       * The name of the scope.
+       */
+      name: string;
+      /**
+       * Names of the service provider hooks that are called when initializing the scope's global helpers.
+       * Defaults to ['registerGlobal', 'bootGlobal'].
+       */
+      global: (keyof ServiceProvider)[];
+      /**
+       * Names of the service provider hooks that are called when initializing the scope's environment.
+       * Defaults to ['registerEnvironment', 'bootEnvironment'].
+       */
+      environment: (keyof ServiceProvider)[];
+      /**
+       * Names of the service provider hooks that are called when initializing the scope's configuration.
+       * Defaults to ['registerConfiguration', 'bootConfiguration'].
+       */
+      configuration: (keyof ServiceProvider)[];
+      /**
+       * Names of the service provider hooks that are called when initializing the scope's services.
+       * Defaults to ['register', 'boot'].
+       */
+      provider: (keyof ServiceProvider)[];
     }
 
     interface ApplicationConfiguration<KernelReturn = void> {
+      /**
+       * Whether the application should be automatically started or not. By default it is set to false.
+       */
+      autoRun: boolean;
+
+      /**
+       * An object containing application's scopes. Each scope will inherit the main application's scope, but can
+       * have its own kernel, container, configurations, environments, service providers and global helpers.
+       * By default it is set to an empty object.
+       */
+      scopes: Record<string, Partial<ApplicationConfiguration<any>>>;
+
       /**
        * An object containing the application's configurations based on the Application.Configurations interface.
        */
@@ -254,7 +293,28 @@ declare global {
       /**
        * It terminates the application.
        */
+      terminate(): Promise<void>;
+      terminate(): void;
       terminate(): Promise<void> | void;
+
+      /**
+       * It creates a new application scope. This is useful when you want to run a set of service providers in a separate scope.
+       *
+       * @param name - The name of the scope.
+       * @param options? - The scope's options.
+       */
+      createScope(
+        name: string,
+        options?: Partial<Omit<ApplicationScopeOptions, 'name'>>,
+      ): Promise<Application>;
+      createScope(
+        name: string,
+        options?: Partial<Omit<ApplicationScopeOptions, 'name'>>,
+      ): Application;
+      createScope(
+        name: string,
+        options?: Partial<Omit<ApplicationScopeOptions, 'name'>>,
+      ): Application | Promise<Application>;
     }
   }
 }
