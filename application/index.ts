@@ -13,22 +13,27 @@ declare global {
   namespace Micra {
     interface Globals {
       /**
-       * It registers the application's instance on the global scope. This is useful for debugging or testing purposes and is not recommended for production. By default it is set to false.
+       * It registers the application's instance on the global scope. This is useful for debugging or testing
+       * purposes and is not recommended for production. By default it is set to false.
+       * @see Micra.Application
        */
       app: Application | boolean;
 
       /**
        * It registers a getter for the application's configurations in the global scope.
+       * @see Micra.Config
        */
       config: Config | boolean;
 
       /**
        * It registers a getter for the application's environment variables in the global scope.
+       * @see Micra.Env
        */
       env: Env | boolean;
 
       /**
        * It registers a getter for the application's services in the global scope.
+       * @see Micra.Use
        */
       use: Use | boolean;
     }
@@ -75,6 +80,7 @@ declare global {
 
       /**
        * An object containing the application's configurations based on the Application.Configurations interface.
+       * @see Application.Configurations
        */
       configurations: Partial<{
         [Configuration in keyof Application.Configurations]:
@@ -84,11 +90,13 @@ declare global {
 
       /**
        * The implementation of the applications's ServiceContainer.
+       * @see Micra.ServiceContainer
        */
       container: Static<ServiceContainer>;
 
       /**
        * An object containing the application's environment classes.
+       * @see Micra.Environment
        */
       environments:
         | Record<string, Environment | Static<Environment>>
@@ -96,16 +104,19 @@ declare global {
 
       /**
        * An object defining which global helper should be initialized.
+       * @see Micra.Globals
        */
       globals: Partial<Globals>;
 
       /**
        * The implementation of the applications's Kernel.
+       * @see Micra.Kernel
        */
       kernel: Kernel<KernelReturn> | Static<Kernel<KernelReturn>>;
 
       /**
        * An object containing the application's service providers.
+       * @see Micra.ServiceProvider
        */
       providers:
         | Record<string, ServiceProvider | Static<ServiceProvider>>
@@ -202,27 +213,38 @@ declare global {
      */
     interface Application extends EventEmitter<ApplicationEvents> {
       /**
+       * The application's global helpers.
+       * @see Micra.Globals
+       */
+      globals: Globals;
+
+      /**
        * The application's configuration.
+       * @see Micra.Configuration
        */
       readonly configuration: Configuration;
 
       /**
        * The application's service container.
+       * @see Micra.ServiceContainer
        */
       readonly container: ServiceContainer;
 
       /**
        * The application's environments.
+       * @see Micra.Environment
        */
       readonly environment: Environment;
 
       /**
        * The application's kernel.
+       * @see Micra.Kernel
        */
       readonly kernel: Kernel;
 
       /**
        * The application's service providers.
+       * @see Micra.ServiceProvider
        */
       readonly serviceProviders: ServiceProvider[];
 
