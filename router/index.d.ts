@@ -1,7 +1,7 @@
-import '@/namespaces';
-import '@/service-container';
-import '@/application/globals/helpers';
-import type {PathOptions, PathParams} from '@/utilities/PathParams';
+import '../namespaces';
+import '../service-container';
+import '../application/globals/helpers';
+import type {PathOptions, PathParams} from '../utilities/PathParams';
 
 declare global {
   namespace Application {

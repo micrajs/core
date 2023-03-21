@@ -1,4 +1,4 @@
-import type {PathsOf, PathValue} from '@/utilities/DotNotation';
+import type {PathsOf, PathValue} from '../../utilities/DotNotation';
 
 declare global {
   namespace Application {

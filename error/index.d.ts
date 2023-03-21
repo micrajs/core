@@ -1,4 +1,4 @@
-import '@/namespaces';
+import '../namespaces';
 
 type GlobalError = Error;
 

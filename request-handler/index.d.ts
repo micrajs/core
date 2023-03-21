@@ -1,6 +1,6 @@
-import '@/namespaces';
-import '@/service-container';
-import '@/application/globals/helpers';
+import '../namespaces';
+import '../service-container';
+import '../application/globals/helpers';
 
 declare global {
   namespace Micra {

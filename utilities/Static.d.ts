@@ -1,11 +1,12 @@
+/* eslint-disable @typescript-eslint/ban-types */
+import {Constructor} from './Constructor';
+
 /**
  * It defines the type for a static class, allowing the definition of constructor parameters and static methods.
+ * @deprecated use Constructor
  */
 export type Static<
   Instance = unknown,
   ConstructorParameters extends Array<unknown> = [],
-  // eslint-disable-next-line @typescript-eslint/ban-types
   StaticMethods extends Record<string, any> = {},
-> = {
-  new (...args: ConstructorParameters): Instance;
-} & StaticMethods;
+> = Constructor<Instance, ConstructorParameters, StaticMethods>;

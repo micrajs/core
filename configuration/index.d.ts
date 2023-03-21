@@ -1,6 +1,10 @@
-import '@/namespaces';
-import '@/event-emitter';
-import type {PathsOf, PathValue, PathValueUnion} from '@/utilities/DotNotation';
+import '../namespaces';
+import '../event-emitter';
+import type {
+  PathsOf,
+  PathValue,
+  PathValueUnion,
+} from '../utilities/DotNotation';
 
 declare global {
   namespace Application {

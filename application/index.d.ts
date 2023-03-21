@@ -1,13 +1,14 @@
-import '@/namespaces';
-import '@/configuration';
-import '@/environment';
-import '@/error';
-import '@/event-emitter';
-import '@/kernel';
-import '@/service-container';
-import '@/service-provider';
-import '@/application/globals/helpers';
-import type {Static} from '@/utilities/Static';
+import '../configuration';
+import '../environment';
+import '../error/index.ts';
+import '../event-emitter';
+import '../kernel';
+import '../namespaces';
+import '../service-container';
+import '../service-provider';
+import type {Constructor} from '../utilities/Constructor';
+import type {MaybeInstanceOf} from '../utilities/MaybeInstanceOf';
+import './globals/helpers';
 
 declare global {
   namespace Micra {
@@ -91,22 +92,22 @@ declare global {
       configurations: Partial<{
         [Configuration in keyof Application.Configurations]:
           | Application.Configurations[Configuration]
-          | Static<Application.Configurations[Configuration]>;
+          | Constructor<Application.Configurations[Configuration]>;
       }>;
 
       /**
        * The implementation of the applications's ServiceContainer.
        * @see Micra.ServiceContainer
        */
-      container: Static<ServiceContainer>;
+      container: Constructor<ServiceContainer>;
 
       /**
        * An object containing the application's environment classes.
        * @see Micra.Environment
        */
       environments:
-        | Record<string, Environment | Static<Environment>>
-        | (Environment | Static<Environment>)[];
+        | Record<string, MaybeInstanceOf<Environment>>
+        | MaybeInstanceOf<Environment>[];
 
       /**
        * An object defining which global helper should be initialized.
@@ -118,15 +119,15 @@ declare global {
        * The implementation of the applications's Kernel.
        * @see Micra.Kernel
        */
-      kernel: Kernel<KernelReturn> | Static<Kernel<KernelReturn>>;
+      kernel: Kernel<KernelReturn> | Constructor<Kernel<KernelReturn>>;
 
       /**
        * An object containing the application's service providers.
        * @see Micra.ServiceProvider
        */
       providers:
-        | Record<string, ServiceProvider | Static<ServiceProvider>>
-        | (ServiceProvider | Static<ServiceProvider>)[];
+        | Record<string, ServiceProvider | Constructor<ServiceProvider>>
+        | (ServiceProvider | Constructor<ServiceProvider>)[];
     }
 
     /**

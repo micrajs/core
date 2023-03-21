@@ -1,7 +1,7 @@
-import '@/namespaces';
-import '@/event-emitter';
-import type {Static} from '@/utilities/Static';
-import type {KeyMethodString} from '@/utilities/KeyMethodString';
+import '../event-emitter';
+import '../namespaces';
+import type {KeyMethodString} from '../utilities/KeyMethodString';
+import type {Constructor} from '../utilities/Constructor';
 
 declare global {
   namespace Application {
@@ -51,7 +51,7 @@ declare global {
     interface ServiceDefinition<Namespace extends keyof Application.Services> {
       dependencies: Exclude<keyof Application.Services, Namespace>[];
       namespace: Namespace;
-      value: Static<Application.Services[Namespace], any[], any>;
+      value: Constructor<Application.Services[Namespace], any[], any>;
     }
 
     /**
@@ -90,7 +90,7 @@ declare global {
        */
       register<Namespace extends keyof Application.Services>(
         namespace: Namespace,
-        service: Static<Application.Services[Namespace]>,
+        service: Constructor<Application.Services[Namespace]>,
       ): this;
       /**
        * It registers a service with the container as a non-shared instance. Such service will be instantiated every time it is requested. The service definition can be used to define the dependencies of the service, which will be resolved when the service is requested.
@@ -107,7 +107,7 @@ declare global {
       ): this;
       register<Namespace extends keyof Application.Services>(
         namespaceOrServiceDefinition: Namespace | ServiceDefinition<Namespace>,
-        service?: Static<Application.Services[Namespace]>,
+        service?: Constructor<Application.Services[Namespace]>,
       ): this;
 
       /**
@@ -123,7 +123,7 @@ declare global {
        */
       singleton<Namespace extends keyof Application.Services>(
         namespace: Namespace,
-        service: Static<Application.Services[Namespace]>,
+        service: Constructor<Application.Services[Namespace]>,
       ): this;
       /**
        * It registers a service with the container as a shared instance. Such service will be instantiated only once and then shared among all the requests. The service definition can be used to define the dependencies of the service, which will be resolved when the service is requested.
@@ -140,7 +140,7 @@ declare global {
       ): this;
       singleton<Namespace extends keyof Application.Services>(
         namespaceOrServiceDefinition: Namespace | ServiceDefinition<Namespace>,
-        service?: Static<Application.Services[Namespace]>,
+        service?: Constructor<Application.Services[Namespace]>,
       ): this;
 
       /**

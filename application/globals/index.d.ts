@@ -1,4 +1,4 @@
 import './app';
-import './config';
+import './config..dts';
 import './env';
 import './use';

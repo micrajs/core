@@ -3,8 +3,7 @@
   "compilerOptions": {
     "target": "es2017",
     "module": "esnext",
-    "declaration": true,
-    "emitDeclarationOnly": true,
+    "declaration": false,
     "removeComments": false,
     "baseUrl": ".",
     "paths": {

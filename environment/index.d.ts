@@ -1,5 +1,5 @@
-import '@/namespaces';
-import '@/event-emitter';
+import '../namespaces';
+import '../event-emitter';
 
 declare global {
   namespace Application {
