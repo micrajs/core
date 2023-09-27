@@ -1,6 +1,6 @@
 import '../configuration';
 import '../environment';
-import '../error/index.ts';
+import '../error';
 import '../event-emitter';
 import '../kernel';
 import '../namespaces';
